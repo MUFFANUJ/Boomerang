@@ -1,0 +1,9 @@
+{
+  "identities": [
+    {
+      "name": "boomerang",
+      "credentials": [{ "accessKey": "boomerang", "secretKey": "boomerang-secret" }],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    }
+  ]
+}

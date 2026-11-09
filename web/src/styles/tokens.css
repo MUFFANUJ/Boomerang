@@ -1,0 +1,145 @@
+/*
+ * Design tokens. Dark is the default; light comes from prefers-color-scheme.
+ * Chart colors follow the dataviz reference palette, validated against these
+ * exact surfaces (dark #16181c, light #ffffff) with validate_palette.js.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg: #0e1013;            /* page plane */
+  --bg-sidebar: #0b0c0f;
+  --surface-1: #16181c;     /* cards, chart surface */
+  --surface-2: #1c1f24;     /* raised: inputs, hover rows */
+  --surface-3: #23272d;     /* pressed, chips */
+  --overlay: rgba(4, 5, 7, 0.62);
+
+  /* Ink */
+  --text-primary: #eeeff1;
+  --text-secondary: #b4b8c0;
+  --text-muted: #868b94;
+  --text-inverse: #0b0b0b;
+
+  /* Lines */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --grid: #262a30;          /* chart gridline hairline */
+  --axis: #383c43;          /* chart baseline */
+
+  /* Accent (interactive) */
+  --accent: #4f9bff;
+  --accent-hover: #6aabff;
+  --accent-soft: rgba(79, 155, 255, 0.14);
+  --accent-ink: #0b1220;
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px rgba(79, 155, 255, 0.6);
+
+  /* Status (reserved: always paired with icon + label) */
+  --good: #0ca30c;
+  --good-ink: #3ccf3c;
+  --good-soft: rgba(12, 163, 12, 0.14);
+  --warning: #fab219;
+  --warning-ink: #fab219;
+  --warning-soft: rgba(250, 178, 25, 0.13);
+  --serious: #ec835a;
+  --serious-ink: #ec835a;
+  --serious-soft: rgba(236, 131, 90, 0.14);
+  --critical: #d03b3b;
+  --critical-ink: #f06a6a;
+  --critical-soft: rgba(208, 59, 59, 0.16);
+  --neutral-soft: rgba(255, 255, 255, 0.06);
+
+  /* Categorical series (dark steps), fixed order */
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+  --series-other: #5d626b;  /* folded tail / unassigned */
+  --series-context: #7d828b; /* de-emphasis gray */
+
+  /* Type */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-base: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+  --fs-2xl: 26px;
+  --fs-hero: 52px;
+
+  /* Space & shape */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-1: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+
+  --sidebar-w: 224px;
+  --topbar-h: 56px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+
+    --bg: #f5f6f8;
+    --bg-sidebar: #eef0f3;
+    --surface-1: #ffffff;
+    --surface-2: #f6f7f9;
+    --surface-3: #eceef2;
+    --overlay: rgba(20, 24, 31, 0.36);
+
+    --text-primary: #0f1114;
+    --text-secondary: #4a4f58;
+    --text-muted: #747a84;
+    --text-inverse: #ffffff;
+
+    --border: rgba(15, 17, 20, 0.09);
+    --border-strong: rgba(15, 17, 20, 0.16);
+    --grid: #e7e8ec;
+    --axis: #c9ccd3;
+
+    --accent: #2a6fd6;
+    --accent-hover: #1f5fc0;
+    --accent-soft: rgba(42, 111, 214, 0.1);
+    --accent-ink: #ffffff;
+    --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px rgba(42, 111, 214, 0.5);
+
+    --good-ink: #006300;
+    --good-soft: rgba(12, 163, 12, 0.1);
+    --warning-ink: #8a5a00;
+    --warning-soft: rgba(250, 178, 25, 0.16);
+    --serious-ink: #a8481f;
+    --serious-soft: rgba(236, 131, 90, 0.14);
+    --critical-ink: #b42828;
+    --critical-soft: rgba(208, 59, 59, 0.1);
+    --neutral-soft: rgba(15, 17, 20, 0.05);
+
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+    --series-6: #008300;
+    --series-7: #6250d6;
+    --series-8: #e34948;
+    --series-other: #a3a7ae;
+    --series-context: #9a9ea6;
+
+    --shadow-1: 0 1px 2px rgba(15, 17, 20, 0.06);
+    --shadow-pop: 0 12px 40px rgba(15, 17, 20, 0.16), 0 2px 6px rgba(15, 17, 20, 0.08);
+  }
+}

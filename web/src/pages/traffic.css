@@ -1,0 +1,138 @@
+.traffic-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: var(--sp-4);
+  align-items: start;
+}
+.traffic-layout > .stack:last-child {
+  position: sticky;
+  top: calc(var(--topbar-h) + var(--sp-4));
+}
+@media (max-width: 1240px) {
+  .traffic-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .traffic-layout > .stack:last-child {
+    position: static;
+  }
+}
+
+.type-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.type-check {
+  padding: 4px 0;
+}
+
+.single-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: var(--fs-md);
+  min-height: 22px;
+}
+
+.burst-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stream-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.stream-row .range {
+  flex: 1;
+}
+.stream-input {
+  width: 130px;
+  flex: none;
+}
+.scale-ticks {
+  position: relative;
+  height: 14px;
+  margin-right: calc(130px + var(--sp-4));
+  font-size: var(--fs-xs);
+  margin-top: -8px;
+}
+.scale-ticks span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-variant-numeric: tabular-nums;
+}
+.scale-ticks span:first-child {
+  transform: none;
+}
+.scale-ticks span:last-child {
+  transform: translateX(-100%);
+}
+
+.feedback-eps {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.feedback-eps-value {
+  font-size: 40px;
+  font-weight: 640;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.counter {
+  background: var(--surface-1);
+  padding: 8px 10px;
+}
+.counter-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.counter-value {
+  font-size: var(--fs-lg);
+  font-weight: 620;
+}
+
+.lat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.lat-grid > div {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.lat-grid strong {
+  font-size: var(--fs-lg);
+  font-weight: 620;
+}
+
+.last-event {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+  font-size: var(--fs-md);
+}

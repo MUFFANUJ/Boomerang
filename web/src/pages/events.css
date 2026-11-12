@@ -1,0 +1,35 @@
+.ex-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  align-items: center;
+}
+.ex-filters .select {
+  min-width: 140px;
+}
+.ex-search {
+  flex: 1;
+  min-width: 220px;
+}
+.ex-id {
+  color: var(--text-primary);
+  font-size: 12px;
+}
+.ex-deliveries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+.ex-delivery {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.ex-ep {
+  color: var(--text-secondary);
+}
+.is-stale-card {
+  opacity: 0.6;
+  transition: opacity 200ms;
+}

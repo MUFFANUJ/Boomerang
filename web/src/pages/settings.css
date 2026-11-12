@@ -1,0 +1,71 @@
+.set-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+@media (max-width: 1150px) {
+  .set-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.set-tenant {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-6);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .set-tenant {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.set-revoked td {
+  opacity: 0.6;
+}
+.rp-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rp-row {
+  display: grid;
+  grid-template-columns: 130px 110px 120px auto auto;
+  gap: 8px;
+  align-items: center;
+  justify-content: start;
+}
+.rp-idx {
+  font-size: 12px;
+}
+.rp-repeat {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rp-plan {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.rp-plan ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--fs-md);
+}
+.rp-plan li {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 8px;
+}
+.rp-dlq {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  color: var(--critical-ink);
+}

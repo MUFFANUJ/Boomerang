@@ -1,0 +1,31 @@
+groups:
+  - name: boomerang
+    rules:
+      - alert: DeliveryConsumerLagHigh
+        expr: sum(boomerang_consumer_lag{group="boomerang-delivery"}) > 10000
+        for: 2m
+        labels: { severity: warning }
+        annotations:
+          summary: Delivery workers are falling behind
+          description: "{{ $value }} delivery tasks are waiting. Scale out workers (KEDA does this automatically in Kubernetes)."
+      - alert: DeliveryErrorRateHigh
+        expr: |
+          sum(rate(boomerang_delivery_attempts_total{outcome=~"failure|dead"}[5m]))
+            / clamp_min(sum(rate(boomerang_delivery_attempts_total{outcome=~"success|failure|dead"}[5m])), 1) > 0.2
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: More than 20% of delivery attempts are failing
+      - alert: DLQGrowing
+        expr: max(delta(boomerang_dlq_depth[10m])) > 0
+        for: 10m
+        labels: { severity: critical }
+        annotations:
+          summary: Dead-letter queue is growing
+          description: "Deliveries are exhausting their retries. Investigate the failing endpoint and replay from the Event Explorer."
+      - alert: CircuitOpen
+        expr: max by (endpoint) (boomerang_circuit_open) == 1
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "Circuit open for {{ $labels.endpoint }}"

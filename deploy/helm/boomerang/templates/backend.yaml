@@ -1,0 +1,30 @@
+{{- $root := . -}}
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "api" "values" .Values.api
+  "serviceAccount" (ternary (printf "%s-scaler" (include "boomerang.fullname" $root)) "" .Values.api.scaler)
+  "extraEnv" (ternary (list (dict "name" "SCALER" "value" "kubernetes") (dict "name" "K8S_NAMESPACE" "value" .Release.Namespace) (dict "name" "K8S_WORKER_DEPLOYMENT" "value" (printf "%s-worker" (include "boomerang.fullname" $root)))) (list) .Values.api.scaler)) }}
+---
+{{ include "boomerang.service" (dict "root" $root "component" "api" "port" 8080) }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "worker" "values" .Values.worker) }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "fanout" "values" .Values.fanout) }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "retry" "values" .Values.retry) }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "recorder" "values" .Values.recorder) }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "realtime" "values" .Values.realtime) }}
+---
+{{ include "boomerang.service" (dict "root" $root "component" "realtime" "port" 8080) }}
+{{- if .Values.demo.shopsim }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "shopsim" "values" (dict "replicas" 1 "resources" .Values.fanout.resources)) }}
+---
+{{ include "boomerang.service" (dict "root" $root "component" "shopsim" "port" 8080) }}
+{{- end }}
+{{- if .Values.demo.receivers }}
+---
+{{ include "boomerang.backendDeployment" (dict "root" $root "component" "receivers" "port" 9000 "values" (dict "replicas" 1 "resources" .Values.fanout.resources) "extraEnv" (list (dict "name" "HTTP_ADDR" "value" ":9000"))) }}
+---
+{{ include "boomerang.service" (dict "root" $root "component" "receivers" "port" 9000) }}
+{{- end }}

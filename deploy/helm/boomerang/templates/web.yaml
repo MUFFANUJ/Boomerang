@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "boomerang.fullname" . }}-web
+  labels:
+    {{- include "boomerang.labels" . | nindent 4 }}
+    app.kubernetes.io/component: web
+spec:
+  replicas: {{ .Values.web.replicas }}
+  selector:
+    matchLabels: {{- include "boomerang.selector" (dict "root" . "component" "web") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "boomerang.selector" (dict "root" . "component" "web") | nindent 8 }}
+    spec:
+      containers:
+        - name: web
+          image: {{ .Values.image.web }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports: [{ name: http, containerPort: 80 }]
+          readinessProbe: { httpGet: { path: /, port: http } }
+          resources: {{- toYaml .Values.web.resources | nindent 12 }}
+---
+{{ include "boomerang.service" (dict "root" . "component" "web" "port" 80) }}

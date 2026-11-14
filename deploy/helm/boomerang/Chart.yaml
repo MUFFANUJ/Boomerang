@@ -1,0 +1,7 @@
+apiVersion: v2
+name: boomerang
+description: Reliable multi-tenant webhook delivery (Kafka, Go workers, retries, circuit breakers, live dashboard)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords: [webhooks, kafka, delivery]

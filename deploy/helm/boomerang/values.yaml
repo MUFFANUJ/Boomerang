@@ -1,0 +1,71 @@
+# Boomerang Helm values.
+#
+# Backing services are external: point these at your Kafka (e.g. Strimzi), Redis, Postgres
+# (through PgBouncer), ClickHouse and S3. See README "Kubernetes" for a quick-start using
+# community charts.
+image:
+  backend: boomerang-backend:local
+  web: boomerang-web:local
+  pullPolicy: IfNotPresent
+
+demoMode: true
+
+external:
+  kafkaBrokers: kafka:9092
+  redisAddr: redis-master:6379
+  postgresURL: postgres://boomerang:boomerang@pgbouncer:6432/boomerang?sslmode=disable
+  postgresDirectURL: postgres://boomerang:boomerang@postgresql:5432/boomerang?sslmode=disable
+  clickhouseURL: http://clickhouse:8123
+  clickhouseUser: boomerang
+  s3Endpoint: s3:8333
+  s3Bucket: boomerang-payloads
+  s3UseSSL: false
+  otlpEndpoint: ""
+
+# Secret values. In production create the Secret yourself (or with External Secrets) and set
+# existingSecret; these defaults are for local clusters only.
+existingSecret: ""
+secrets:
+  secretsEncryptionKey: dev-only-secrets-key-change-me
+  internalToken: dev-internal-token
+  shopsimAPIKey: bmr_live_shopsim_demo_key_0000000000000000
+  clickhousePassword: boomerang
+  s3AccessKey: boomerang
+  s3SecretKey: boomerang-secret
+
+api:
+  replicas: 2
+  resources: { requests: { cpu: 100m, memory: 96Mi }, limits: { memory: 256Mi } }
+  autoscaling: { enabled: true, minReplicas: 2, maxReplicas: 10, targetCPU: 70 }
+  # Lets the dashboard scale/kill workers via the Kubernetes API (RBAC below).
+  scaler: true
+
+worker:
+  replicas: 1
+  resources: { requests: { cpu: 250m, memory: 96Mi }, limits: { cpu: 500m, memory: 256Mi } }
+  terminationGracePeriodSeconds: 40
+  # KEDA scales workers on Kafka consumer lag, not CPU.
+  keda:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 12 # never more than the partition count of boomerang.deliveries
+    lagThreshold: "1000"
+    pollingInterval: 5
+    cooldownPeriod: 60
+
+fanout: { replicas: 2, resources: { requests: { cpu: 100m, memory: 64Mi }, limits: { memory: 256Mi } } }
+retry: { replicas: 1, resources: { requests: { cpu: 50m, memory: 64Mi }, limits: { memory: 256Mi } } }
+recorder: { replicas: 2, resources: { requests: { cpu: 100m, memory: 96Mi }, limits: { memory: 256Mi } } }
+realtime: { replicas: 1, resources: { requests: { cpu: 100m, memory: 96Mi }, limits: { memory: 256Mi } } }
+web: { replicas: 2, resources: { requests: { cpu: 20m, memory: 16Mi }, limits: { memory: 64Mi } } }
+
+# Demo-only components.
+demo:
+  shopsim: true
+  receivers: true
+
+ingress:
+  enabled: true
+  className: nginx
+  host: boomerang.local
+  tls: []

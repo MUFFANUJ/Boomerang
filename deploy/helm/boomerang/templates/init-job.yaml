@@ -1,0 +1,21 @@
+# Runs migrations, creates topics/bucket and seeds the demo tenant on install and upgrade.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "boomerang.fullname" . }}-init-{{ .Release.Revision }}
+  labels: {{- include "boomerang.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: OnFailure
+      securityContext: { runAsNonRoot: true, runAsUser: 10001 }
+      containers:
+        - name: init
+          image: {{ .Values.image.backend }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["init"]
+          env: {{- include "boomerang.env" . | nindent 12 }}

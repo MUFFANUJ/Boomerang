@@ -1,0 +1,32 @@
+{{- if .Values.api.scaler }}
+{{- $name := include "boomerang.fullname" . }}
+# Lets the API's dashboard scaler change worker replicas and delete worker pods (kill demo).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}-scaler
+  labels: {{- include "boomerang.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}-scaler
+  labels: {{- include "boomerang.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [apps]
+    resources: [deployments/scale]
+    resourceNames: [{{ $name }}-worker]
+    verbs: [get, patch, update]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [delete]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}-scaler
+  labels: {{- include "boomerang.labels" . | nindent 4 }}
+roleRef: { apiGroup: rbac.authorization.k8s.io, kind: Role, name: {{ $name }}-scaler }
+subjects:
+  - { kind: ServiceAccount, name: {{ $name }}-scaler, namespace: {{ .Release.Namespace }} }
+{{- end }}
